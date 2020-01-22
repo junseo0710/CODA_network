@@ -55,10 +55,16 @@ def addgnode(entity):
 # main function
 if __name__ == '__main__':
     G = nx.DiGraph()
-    f = open("./all_level0.txt", encoding='utf-8')
+    f = open("./input/all_level0.txt", encoding='utf-8')
     lines = f.readlines()
     beforeline = ''
     edgecnts = dict()
+    gene_cnt = 0
+    pt_cnt = 0
+    pheno_cnt = 0
+    bp_cnt = 0
+    mf_cnt = 0
+    cp_cnt = 0
     print('Start parsing.......')
     for line in lines:
         # 첫번째 줄 일때
@@ -132,7 +138,7 @@ if __name__ == '__main__':
     #     if not nx.has_path(H, 'PH00074992', node):
     #         H.remove_node(node)
     for key in edgecnts.keys():
-        if edgecnts[key] < 3 and (key[0], key[1]) in H.edges():
+        if edgecnts[key] < 5 and (key[0], key[1]) in H.edges():
             H.remove_edge(key[0], key[1])
     for node in G.nodes():
         if node == 'PH00074992':
@@ -143,24 +149,42 @@ if __name__ == '__main__':
             if nx.shortest_path_length(G, 'PH00074992', node) > 2:
                 H.remove_node(node)
     print('Finish removing')
+    for node in H.nodes():
+        if 'PH' in node:
+            pheno_cnt += 1
+        elif 'PX' in node:
+            pt_cnt += 1
+        elif 'GE' in node:
+            gene_cnt += 1
+        elif 'CP' in node:
+            cp_cnt += 1
+        elif 'MF' in node:
+            mf_cnt += 1
+        elif 'BP' in node:
+            bp_cnt += 1
+        else:
+            pass
+
     print('nodes are ' + str(H.number_of_nodes()))
     print('edges are ' + str(H.number_of_edges()))
-
-    # largest_hub = 'PH00074992'
-    # # Create ego graph of main hub
-    # hub_ego = nx.ego_graph(H, largest_hub)
-    # # Draw graph
-    # pos = nx.spring_layout(hub_ego)
-    # nx.draw(hub_ego, pos, node_color='b', edge_color='#C7C7CA', node_size=4, width = 0.5, arrowsize=0.5, with_labels=False)
-    # # Draw ego as large and red
-    # nx.draw_networkx_nodes(hub_ego, pos, nodelist=[largest_hub], node_size=100, node_color='r')
-    # # save_graph_as_svg(G, 'alpha_algorithm_dot')
-    # # nx.draw(G)
-    # plt.savefig("networkGraph.png")
+    print('Phenotypes are ' + str(pheno_cnt) + ' Protein complex are ' + str(pt_cnt) + ' Genes are ' + str(gene_cnt) + ' Compounds are ' + str(cp_cnt)
+    + ' MFs are ' + str(mf_cnt) + ' BPs are ' + str(bp_cnt))
+    print('sum is ' + str(pheno_cnt+pt_cnt+gene_cnt+cp_cnt+ mf_cnt+bp_cnt))
+    largest_hub = 'PH00074992'
+    # Create ego graph of main hub
+    hub_ego = nx.ego_graph(H, largest_hub)
+    # Draw graph
+    pos = nx.spring_layout(hub_ego)
+    nx.draw(hub_ego, pos, node_color='b', edge_color='#C7C7CA', node_size=4, width = 0.5, arrowsize=0.5, with_labels=False)
+    # Draw ego as large and red
+    nx.draw_networkx_nodes(hub_ego, pos, nodelist=[largest_hub], node_size=100, node_color='r')
+    # save_graph_as_svg(G, 'alpha_algorithm_dot')
+    # nx.draw(G)
+    plt.savefig("./output/networkGraph.png")
     # G.render('network_output2')
-    pos = nx.nx_agraph.graphviz_layout(H)
-    nx.draw(H, pos=pos)
-    write_dot(H, 'file.dot')
+    # pos = nx.nx_agraph.graphviz_layout(H)
+    # nx.draw(H, pos=pos)
+    # write_dot(H, 'file.dot')
     # #3D graph
     # # reorder nodes from 0,len(G)-1
     # G=nx.convert_node_labels_to_integers(H)
