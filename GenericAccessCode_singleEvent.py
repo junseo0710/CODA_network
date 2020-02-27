@@ -333,12 +333,12 @@ if __name__ == '__main__':
                            ("GeneProduct", "type", "left"): (),
                            ("GeneProduct", "A_modification", "left"): (),
                            ("GeneProduct", "isoform", "left"): (),
-                           ("KnowledgeUnit", "leftOrganID"): (),
+                           ("KnowledgeUnit", "leftOrganID"): ('OG00000562', ),
                            ("KnowledgeUnit", "leftTissueID"): (),
                            ("KnowledgeUnit", "leftCellID"): (),
-                           ("KnowledgeUnit", "association"): (),
+                           ("KnowledgeUnit", "association"): ('Undirected Link',),
                            ("KnowledgeUnit", "rightType"): (),
-                           ("KnowledgeUnit", "rightEntityID"): ('PH00074992',),
+                           ("KnowledgeUnit", "rightEntityID"): (),
                            ("GeneProduct", "geneID", "right"): (),
                            ("GeneProduct", "type", "right"): (),
                            ("GeneProduct", "A_modification", "right"): (),
@@ -350,7 +350,7 @@ if __name__ == '__main__':
                            ("KnowledgeUnit", "associationContext", "Compound"): (),
                            ("KnowledgeUnit", "associationContext", "Phenotype"): (),
                            ("KnowledgeUnit", "associationInSource"): (),
-                           ("KnowledgeUnit", "speciesID"): (),
+                           ("KnowledgeUnit", "speciesID"): ('SP00000445',),
                            ("Reference", "name"): (),
                            ("Reference", "refType"): (),
                            ("Reference", "recordID"): (),
@@ -361,7 +361,7 @@ if __name__ == '__main__':
                            ("KnowledgeUnit", 'evidenceScore', 'P Value'): (),
                            ("KnowledgeUnit", 'evidenceScore', 'Discrete Level'): (),
                            ("KnowledgeUnit", 'evidenceScore', 'Inferred Quantity'): (),
-                           ("KnowledgeUnit", "level"): ('0',)}
+                           ("KnowledgeUnit", "level"): ()}
 
     startTime = datetime.now()
     print("Start: " + str(startTime))
@@ -370,7 +370,7 @@ if __name__ == '__main__':
     KUTable = getKUTable(dictSelectCondition)
 
     # Get more detailed information about the knowledge unit and write down the knowledge units to 'test.txt' in BSML format.
-    completeBSMLFormat(KUTable, '../stomach_neoplasm_level0_right.txt')
+    completeBSMLFormat(KUTable, './input/stomach_neoplasm_level1.txt')
 
     # Close communication with the database
     cur.close()
